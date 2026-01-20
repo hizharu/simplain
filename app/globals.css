@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
-.btn{
-  @apply flex items-center justify-center gap-2 px-[18px] py-[9px] rounded-full bg-white text-black-[14px] font-medium
-}
+/* .btn{
+   flex items-center justify-center gap-2 px-[18px] py-[9px] rounded-full bg-white text-black-[14px] font-medium
+} */
