@@ -9,6 +9,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         space: ["var(--font-space)"],
+        inter: ["var(--font-inter)"],
       },
       backgroundImage: {
         "simplain-gradient": 
