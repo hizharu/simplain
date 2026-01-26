@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link"
 
 
 export default function Home() {
@@ -23,22 +24,9 @@ const levels = [
   ];
 
   return ( <main>
-    <header>
-      <nav className="bg-dark">
-        <ul className="bg-white/20 container mx-auto h-15 w-175 rounded-full flex items-center justify-center gap-12 text-white fixed top-4 left-1/2 -translate-x-1/2 z-50">
 
-            <li className="cursor-pointer">Logo</li>
-            <li className="cursor-pointer">Home</li>
-            <li className="cursor-pointer">Fundamental</li>
-            <li className="cursor-pointer">Explain Me</li>
-            <li className="cursor-pointer">Quiz</li>
-            <li className="cursor-pointer">Account</li>
-        </ul>
-      </nav>
-    </header>
-
-<section className="mt-30 pt-20 px-6 mx-auto relative overflow-hidden">
-  <div className="container mx-auto relative">
+<section className="mt-12  pt-20 px-6 mx-auto relative overflow-hidden">
+  <div id="main-home"  className="container mx-auto relative p-12">
     <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
       <div className="relative z-10">
         <h1 className="text-white text-[48px] font-medium leading-tight">
@@ -56,7 +44,7 @@ const levels = [
       <div className="relative mt-10 mr-10 lg:mt-0">
         <div className="relative w-full h-80 lg:h-96 flex justify-center lg:justify-end">
           <Image
-            src="/images/hero-img.png" // Update with your actual image path
+            src="/images/hero-img.png"
             alt="Illustration showing simple explanations concept"
             fill
             className="object-contain object-right"
@@ -67,8 +55,8 @@ const levels = [
     </div>
   </div>
 </section>
-    <section className="mt-90 place-items-center">
-      <div>
+    <section className="mt-70 place-items-center">
+      <div id="fundamental-section" >
         <h1 className="text-center text-white font-medium font-space text-[48px]">
           Make yourself understand <br />
           the complex things with us
@@ -78,33 +66,21 @@ const levels = [
          Tap one of the fundamental lesson <br />for more information about that
       </p>
       <div className="font-semibold flex justify-center gap-16 mt-16">
-      <button className="cursor-pointer flex flex-col items-center gap-3 text-white hover:scale-105 transition">
-        <Image
-          src="/icons/math.png"
-          alt="Formal Sciences"
-          width={64}
-          height={64}
-        />
+      <Link 
+        href="/fundamental/formal-science" className="group flex flex-col items-center gap-3 text-white hover:scale-105 transition">
+        <Image src="/icons/math.png" alt="Formal Sciences" width={64} height={64}/>
         <span className="text-sm font-medium">Formal Sciences</span>
-      </button>
-      <button className="cursor-pointer flex flex-col items-center gap-3 text-white hover:scale-105 transition">
-        <Image
-          src="/icons/nature.png"
-          alt="Natural Sciences"
-          width={64}
-          height={64}
-        />
+      </Link>
+      <Link 
+        href="/fundamental/natural-science" className="group flex flex-col items-center gap-3 text-white hover:scale-105 transition">
+        <Image src="/icons/nature.png" alt="Natural Sciences" width={64} height={64}/>
         <span className="text-sm font-medium">Natural Sciences</span>
-      </button>
-      <button className="cursor-pointer flex flex-col items-center gap-3 text-white hover:scale-105 transition">
-        <Image
-          src="/icons/social.png"
-          alt="Social Sciences"
-          width={64}
-          height={64}
-        />
+      </Link>
+      <Link 
+        href="/fundamental/social-science" className="group flex flex-col items-center gap-3 text-white hover:scale-105 transition">
+        <Image src="/icons/social.png" alt="Social Sciences" width={64} height={64}/>
         <span className="text-sm font-medium">Social Sciences</span>
-      </button>
+      </Link>
     </div>
     <button className="flex flex-col items-center justify-center mt-20 group cursor-pointer transition-transform hover:scale-110">
       <h5 className="text-white font-space font-medium text-sm mb-2">
@@ -120,14 +96,14 @@ const levels = [
       </div>
     </button>
       <div className="mt-50">
-        <h1 className="mb-14 text-center text-[48px] font-semibold text-white">
+        <h1 id="explain-section" className="mb-14 text-center text-[48px] font-semibold text-white">
           Pick one topic to ask and start <br /> from zero
         </h1>
 
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 sm:grid-cols-2 md:grid-cols-4">
           {[
             //ini bagian kostumisasi pengambilan data
-            { title: "Technology", image: "/topics/technology.jpg" },
+            { title: "Technology", image: "/topics/technology.jpg", href:'/explain/' },
             { title: "Life & Mind", image: "/topics/life-mind.jpg" },
             { title: "Everyday Science", image: "/topics/everyday-science.jpg" },
             { title: "Society & World", image: "/topics/society-world.jpg" },
@@ -153,39 +129,42 @@ const levels = [
           ))}
         </div>
       </div>
-    <div className="mt-60 text-white">
-      <h1 className="text-[48px] text-space font-semibold text-center ">Let's test your knowladge here !</h1>
-      <p className="text-center text-[24px] font-normal ">Select The Level</p>
-      <div className="mt-5 flex gap-10 flex-wrap justify-center">
-        {levels.map((level, index) => (
-          <div
-            key={index}
-            className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md shadow-lg cursor-pointer transition-shadow duration-300 ease-out hover:shadow-xl"
-          >
-            {/* Image */}
-            <Image
-              src={level.image}
-              alt={level.title}
-              fill
-              className="object-cover"
-            />
+   <div className="mt-60 text-white">
+  <h1 id="quiz-section" className="text-[48px] text-space font-semibold text-center" >Let's test your knowledge here!</h1>
+  <p className="text-center text-[24px] font-normal">Select The Level</p>
+  
+  <div className="mt-5 flex gap-10 flex-wrap justify-center">
+    {levels.map((level, index) => (
+      /* Use /quiz as the href to reach app/quiz/page.tsx */
+      <Link
+        href="/quiz/"
+        key={index}
+        className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md shadow-lg cursor-pointer transition-all duration-300 ease-out hover:shadow-xl hover:scale-105"
+      >
+        {/* Image */}
+        <Image
+          src={level.image}
+          alt={level.title}
+          fill
+          className="object-cover"
+        />
 
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/25" />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors" />
 
-            {/* Text */}
-            <div className="absolute top-4 left-4 right-4">
-              <h3 className="text-sm font-semibold">
-                {level.title}
-              </h3>
-              <p className="text-xs opacity-80 mt-1">
-                {level.subtitle}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+        {/* Text */}
+        <div className="absolute top-4 left-4 right-4">
+          <h3 className="text-sm font-semibold">
+            {level.title}
+          </h3>
+          <p className="text-xs opacity-80 mt-1">
+            {level.subtitle}
+          </p>
+        </div>
+      </Link>
+    ))}
+  </div>
+</div>
     </section>
     <footer className="mt-50 relative w-full pt-32 pb-24">
       <div className="absolute inset-0 -z-10">

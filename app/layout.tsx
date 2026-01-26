@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Inter, Space_Grotesk } from "next/font/google"
 import "./globals.css"
+import Navbar from "@/components/Navbar"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable}`}
     >
       <body className="bg-linear-to-b from-[#62A2F3] to-[#41BBD9] min-h-screen">
+        <Navbar />
         {children}
       </body>
     </html>
