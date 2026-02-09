@@ -80,7 +80,7 @@ export default function SignUpPage() {
         <div className="relative hidden lg:flex justify-center">
           <div className="relative w-[420px] h-[420px]">
             <Image
-              src="/images/signup-hero.png"
+              src="/images/signupimage.png"
               alt="Signup Illustration"
               fill
               className="object-contain"

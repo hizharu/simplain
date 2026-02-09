@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function RegisterPage() {
   return (
-    <main className="min-h-screen w-full bg-gradient-to-br from-[#5DA9FF] to-[#7CB7FF] flex items-center justify-center px-6">
+    <main className="min-h-screen w-full bg-linear-to-br from-[#5DA9FF] to-[#7CB7FF] flex items-center justify-center px-6">
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         
         {/* LEFT SECTION */}
@@ -43,14 +43,14 @@ export default function RegisterPage() {
         {/* RIGHT SECTION */}
         <div className="flex gap-6 justify-center lg:justify-end flex-wrap">
           <ValueCard
-            image="/images/value-1.png"
+            image="/images/value1.png"
             subtitle="Our Values"
             title="User Friendly"
             description="Simple explanation explain the complex things using simple analogy."
           />
 
           <ValueCard
-            image="/images/value-2.png"
+            image="/images/value2.png"
             subtitle="Our Values"
             title="Interactive Learning"
             description="Super Quiz — Quiz that doesn’t feel like a test."
