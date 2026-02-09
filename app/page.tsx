@@ -99,19 +99,19 @@ const levels = [
         <h1 id="explain-section" className="mb-14 text-center text-[48px] font-semibold text-white">
           Pick one topic to ask and start <br /> from zero
         </h1>
-
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 sm:grid-cols-2 md:grid-cols-4">
           {[
-            //ini bagian kostumisasi pengambilan data
-            { title: "Technology", image: "/topics/technology.jpg", href:'/explain/' },
-            { title: "Life & Mind", image: "/topics/life-mind.jpg" },
-            { title: "Everyday Science", image: "/topics/everyday-science.jpg" },
-            { title: "Society & World", image: "/topics/society-world.jpg" },
+            // 2. Ensure every object has an 'href'
+            { title: "Technology", image: "/topics/technology.jpg", href: '/explain/' },
+            { title: "Life & Mind", image: "/topics/life-mind.jpg", href: '/explain/' },
+            { title: "Everyday Science", image: "/topics/everyday-science.jpg", href: '/explain/' },
+            { title: "Society & World", image: "/topics/society-world.jpg", href: '/explain/' },
           ].map((topic) => (
-            <div
+            <Link
+              href={topic.href} // 3. Pass the href here
               key={topic.title}
-              //noted design ini
-              className="group relative h-72 overflow-hidden rounded-2xl cursor-pointer"
+              // 4. Move your design classes here so the Link acts as the container
+              className="group relative h-72 overflow-hidden rounded-2xl cursor-pointer block"
             >
               <Image
                 src={topic.image}
@@ -125,7 +125,7 @@ const levels = [
                   {topic.title}
                 </h3>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

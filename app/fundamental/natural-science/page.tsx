@@ -18,7 +18,7 @@ export default function NaturalSciencePage() {
         {/*header*/}
         <div className="mb-12 max-w-xl">
         <Link
-         href="/" className="mb-6 flex items-center gap-2 text-white/80 hover:text-white transition">
+         href="/#fundamental-section" className="mb-6 flex items-center gap-2 text-white/80 hover:text-white transition">
             <ArrowLeft size={18} />
         </Link>
 

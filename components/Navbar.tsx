@@ -9,7 +9,7 @@ const navItems = [
   { name: "Fundamental", href: "/#fundamental-section", scroll:true },
   { name: "ExplainMe", href: "/#explain-section", scroll:true },
   { name: "Quiz", href: "/#quiz-section", scroll:true },
-  { name: "Account", href: "/account" },
+  { name: "Account", href: "/register" },
 ]
 
 export default function Navbar() {
