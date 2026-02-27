@@ -1,5 +1,6 @@
 import QuizOptionButton from "@/components/molecules/QuizOptionButton"
 import QuizNavigation from "@/components/organisms/QuizNavigation"
+import QuizProgressBar from "./QuizProgressBar"
 
 interface Question {
   level: string
@@ -15,6 +16,7 @@ interface Props {
   onBack: () => void
   isFirst: boolean
   isLast: boolean
+  progress: number
 }
 
 export default function QuizCard({
@@ -25,14 +27,16 @@ export default function QuizCard({
   onBack,
   isFirst,
   isLast,
+  progress,
 }: Props) {
   return (
     <section className="mt-14 w-full max-w-xl animate-slideIn">
-      <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1 text-xs">
+      <QuizProgressBar progress={progress}/>
+      <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-1 text-xs text-white">
         Level : {question.level}
       </span>
 
-      <h1 className="mb-8 text-center text-2xl font-semibold md:text-3xl">
+      <h1 className="mb-8 text-center text-2xl font-semibold text-white md:text-3xl">
         {question.question}
       </h1>
 

@@ -12,11 +12,11 @@ export default function QuizOptionButton({
   return (
     <button
       onClick={onClick}
-      className={`rounded-xl px-5 py-4 text-left text-sm font-medium transition-all
+      className={`w-full rounded-xl px-6 py-4 text-left transition-all duration-200
         ${
           isSelected
-            ? "bg-black text-white scale-[1.02]"
-            : "bg-white/90 text-blue-900 hover:-translate-y-0.5"
+            ? "bg-white text-blue-900"
+            : "bg-white/80 text-blue-900 hover:bg-white"
         }`}
     >
       {text}

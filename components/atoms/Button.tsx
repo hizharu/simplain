@@ -1,16 +1,17 @@
-import { ReactNode, ButtonHTMLAttributes } from "react";
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
+interface ButtonProps {
+  children: React.ReactNode
+  onClick?: () => void
+  disabled?: boolean
 }
 
-export default function Button({ children, className = "", ...props } :ButtonProps) {
+export default function Button({ children, onClick, disabled }: ButtonProps) {
   return (
     <button
-      className={`cursor-pointer flex items-center justify-center gap-2 px-4.5 py-2.25 rounded-full bg-white text-black text-[14px] font-medium mt-10 hover:bg-gray-100 transition ${className}`}
-      {...props}
+      onClick={onClick}
+      disabled={disabled}
+      className="mt-8 rounded-full bg-white px-8 py-3 font-medium text-blue-900 transition hover:scale-105 disabled:opacity-50"
     >
       {children}
     </button>
-  );
+  )
 }
