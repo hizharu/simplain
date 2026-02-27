@@ -2,7 +2,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function QuizLevelCard({ title, subtitle, image }) {
+interface Props {
+  title: string
+  subtitle: string
+  image: string
+}
+
+export default function QuizLevelCard({ title, subtitle, image }: Props) {
   return (
     <Link href="/quiz/" className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden">
       <Image src={image} alt={title} fill className="object-cover" />

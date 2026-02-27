@@ -3,26 +3,31 @@ import Link from "next/link";
 
 
 export default function ContentSection() {
-    const levels = [
-    {
-      title: "Easy Level",
-      subtitle: "Welcome to the world",
-      image: "/images/quiz-easy.webp",
-    },
-    {
-      title: "Medium Level",
-      subtitle: "Intermediate knowledge test",
-      image: "/images/quiz-medium.webp",
-    },
-    {
-      title: "Hard Level",
-      subtitle: "Are you know anything? Prove here !",
-      image: "/images/quiz-hard.webp",
-    },
-  ];
+const levels = [
+  {
+    title: "Easy Level",
+    slug: "easy",
+    subtitle: "Welcome to the world",
+    image: "/images/quiz-easy.webp",
+  },
+  {
+    title: "Medium Level",
+    slug: "medium",
+    subtitle: "Intermediate knowledge test",
+    image: "/images/quiz-medium.webp",
+  },
+  {
+    title: "Hard Level",
+    slug: "hard",
+    subtitle: "Are you know anything? Prove here !",
+    image: "/images/quiz-hard.webp",
+  },
+]
+
 
 
     return(
+      
             <section className="mt-70 place-items-center">
       <div id="fundamental-section" >
         <h1 className="text-center text-white font-medium font-space text-[48px]">
@@ -97,18 +102,15 @@ export default function ContentSection() {
           ))}
         </div>
       </div>
-   <div className="mt-60 text-white">
+<div className="mt-60 text-white">
   <h1 id="quiz-section" className="text-[48px] text-space font-semibold text-center" >Let's test your knowledge here!</h1>
   <p className="text-center text-[24px] font-normal">Select The Level</p>
-  
-  <div className="mt-5 flex gap-10 flex-wrap justify-center">
-    {levels.map((level, index) => (
-      /* Use /quiz as the href to reach app/quiz/page.tsx */
-      <Link
-        href="/quiz/"
-        key={index}
-        className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md shadow-lg cursor-pointer transition-all duration-300 ease-out hover:shadow-xl hover:scale-105"
-      >
+    <div className="mt-5 flex gap-10 flex-wrap justify-center">
+      {levels.map((level, index) => (
+    <Link
+      href={`/quiz/${level.slug}`}
+      key={index}
+      className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md shadow-lg cursor-pointer transition-all duration-300 ease-out hover:shadow-xl hover:scale-105">
         {/* Image */}
         <Image
           src={level.image}
@@ -120,6 +122,7 @@ export default function ContentSection() {
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors" />
 
+        
         {/* Text */}
         <div className="absolute top-4 left-4 right-4">
           <h3 className="text-sm font-semibold">
