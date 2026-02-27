@@ -1,11 +1,20 @@
+
+
 import type { Metadata } from "next"
-import { Space_Grotesk } from "next/font/google"
+import { Inter, Space_Grotesk } from "next/font/google"
 import "./globals.css"
+import Navbar from "@/components/organisms/Navbar"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-space",
+})
+
+const inter = Inter ({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -19,8 +28,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={spaceGrotesk.variable}>
-      <body className="bg-gradient-to-b from-[#62A2F3] to-[#41BBD9] min-h-screen">
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${inter.variable}`}
+    >
+      <body className="bg-linear-to-b from-[#62A2F3] to-[#41BBD9] min-h-screen">
+        <Navbar />
         {children}
       </body>
     </html>
