@@ -47,7 +47,7 @@ export default function HardLevelIntroPage() {
           </button>
 
           <button
-            onClick={() => router.push('/quiz/play/hard')}
+            onClick={() => router.push('/quiz')}
             className="rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition hover:opacity-90 active:scale-95"
           >
             Play Quiz
