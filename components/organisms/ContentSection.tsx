@@ -107,31 +107,27 @@ const levels = [
   <p className="text-center text-[24px] font-normal">Select The Level</p>
     <div className="mt-5 flex gap-10 flex-wrap justify-center">
       {levels.map((level, index) => (
-    <Link
-      href={`/quiz/${level.slug}`}
-      key={index}
-      className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md shadow-lg cursor-pointer transition-all duration-300 ease-out hover:shadow-xl hover:scale-105">
-        {/* Image */}
-        <Image
-          src={level.image}
-          alt={level.title}
-          fill
-          className="object-cover"
-        />
+  <Link
+    href={`/quiz/levelstart/${level.slug}`}  // Changed from /quiz/${level.slug}
+    key={index}
+    className="group relative w-[260px] h-[380px] rounded-2xl overflow-hidden ..."
+  >
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors" />
-
-        
-        {/* Text */}
-        <div className="absolute top-4 left-4 right-4">
-          <h3 className="text-sm font-semibold">
-            {level.title}
-          </h3>
-          <p className="text-xs opacity-80 mt-1">
-            {level.subtitle}
-          </p>
-        </div>
+  <Image
+                src={level.image}
+                alt={level.title}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/25 group-hover:bg-black/40 transition-colors" />
+              <div className="absolute top-4 left-4 right-4">
+                <h3 className="text-sm font-semibold">
+                  {level.title}
+                </h3>
+                <p className="text-xs opacity-80 mt-1">
+                  {level.subtitle}
+                </p>
+              </div>
       </Link>
     ))}
   </div>
