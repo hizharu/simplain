@@ -21,7 +21,7 @@ export default function HeroSection() {
           <div className="relative mt-10 mr-10 lg:mt-0">
             <div className="relative w-full h-80 lg:h-96 flex justify-center lg:justify-end">
               <Image
-                src="/images/hero-img.png"
+                src="/images/herosection.png"
                 alt="Illustration showing simple explanations concept"
                 fill
                 className="object-contain object-right"

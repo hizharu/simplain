@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export default function LoginFormSection() {
   return (
-    <div className="text-white max-w-md">
+    <div className="text-white max-w-md mt-10">
       <h1 className="text-3xl lg:text-4xl font-semibold mb-8">
         Login Account
       </h1>

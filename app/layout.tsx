@@ -32,7 +32,7 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable}`}
     >
-      <body className="bg-linear-to-b from-[#62A2F3] to-[#41BBD9] min-h-screen">
+      <body className="bg-[#62A2F3] min-h-screen">
         <Navbar />
         {children}
       </body>
