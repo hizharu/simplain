@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Button from "@/components/atoms/Button";
 
 export default function Footer() {
     return (
@@ -15,10 +14,10 @@ export default function Footer() {
       </div>
       <Link
       href="#main-home">
-      <Button 
+      <button 
       className="cursor-pointer absolute top-6 right-6 z-30 text-sm font-semibold bg-white text-black rounded-full px-3 py-1 hover:bg-gray-100 transition">
         Back to the top
-      </Button>
+      </button>
       </Link>
       
       <div className="container mx-auto px-6 relative z-20">
@@ -29,9 +28,9 @@ export default function Footer() {
               <p className="text-sm opacity-80 mb-6">
                 Simple explanations for curious minds
               </p>
-              <Button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition">
+              <button className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition">
                 Subscribe to our email
-              </Button>
+              </button>
               <div className="mt-5 flex flex-col gap-2 text-sm opacity-90">
                 <span>simplain@edu.com</span>
                 <span>Youtube</span>
