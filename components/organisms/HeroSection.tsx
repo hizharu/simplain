@@ -1,6 +1,4 @@
 import Image from "next/image";
-import Link from "next/link"
-import Button from "@/components/atoms/Button"
 
 export default function HeroSection() {
   return (
@@ -16,9 +14,9 @@ export default function HeroSection() {
               and insights that actually stick <br/>
               Because this world is full of the <span className="text-black">complex things</span>
             </p>
-            <Button className="cursor-pointer flex items-center justify-center gap-2 px-4.5 py-2.25 rounded-full bg-white text-black text-[14px] font-medium mt-10 hover:bg-gray-100 transition">
+            <button className="cursor-pointer flex items-center justify-center gap-2 px-4.5 py-2.25 rounded-full bg-white text-black text-[14px] font-medium mt-10 hover:bg-gray-100 transition">
               Get Started
-            </Button>
+            </button>
           </div>
           <div className="relative mt-10 mr-10 lg:mt-0">
             <div className="relative w-full h-80 lg:h-96 flex justify-center lg:justify-end">
