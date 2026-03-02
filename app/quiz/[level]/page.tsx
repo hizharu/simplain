@@ -172,6 +172,7 @@ export default function QuizPage({ params }: PageProps) {
           onBack={handleBack}
           isFirst={currentIndex === 0}
           isLast={currentIndex === total - 1}
+          progress={progress}
         />
       </div>
     </main>

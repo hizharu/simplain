@@ -36,10 +36,10 @@ export default function LevelStartPage({ params }: PageProps) {
 
   return (
     <div className={`min-h-screen flex items-center justify-center bg-gradient-to-b ${config.bgColor}`}>
-      <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl w-[380px] px-8 py-12 text-center border border-white/20">
+      <div className="mt-16 bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl w-[380px] px-8 py-12 text-center border border-white/20">
         
         {/* Level Icon/Illustration */}
-        <div className="mb-6 flex justify-center">
+        <div className="mb-4 flex justify-center">
           <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center">
             <span className="text-4xl font-bold text-white">
               {config.name[0]}
@@ -53,19 +53,19 @@ export default function LevelStartPage({ params }: PageProps) {
         </h1>
 
         {/* Description */}
-        <p className="text-white/80 mb-8">
+        <p className="text-white/80 mb-6">
           {config.description}
         </p>
 
         {/* Stats Preview */}
-        <div className="bg-white/10 rounded-xl p-4 mb-8">
+        <div className="bg-white/10 rounded-xl p-4 mb-6">
           <div className="flex justify-between text-white/90 text-sm mb-2">
             <span>Questions:</span>
             <span className="font-bold">10</span>
           </div>
           <div className="flex justify-between text-white/90 text-sm mb-2">
             <span>Time:</span>
-            <span className="font-bold">15 min</span>
+            <span className="font-bold">2 min</span>
           </div>
           <div className="flex justify-between text-white/90 text-sm">
             <span>XP Reward:</span>
