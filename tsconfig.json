@@ -30,6 +30,6 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "**/*.d.ts"
-, "tailwind.config.ts"  ],
+, "tailwind.config.ts", "components/atoms/XPChip.tsx"  ],
   "exclude": ["node_modules"]
 }
