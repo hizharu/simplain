@@ -4,7 +4,6 @@ import { useState, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
-import { compressImage } from "@/utils/compressimage"
 import Toast, { ToastType } from "@/components/atoms/Toast"
 import AvatarPicker from "@/components/atoms/AvatarPicker"
 
@@ -31,16 +30,10 @@ export default function SignUpFormSection() {
   const [loading, setLoading] = useState(false)
   const [toast, setToast] = useState<ToastState | null>(null)
 
-  // ─── Avatar pick + compress ────────────────────────────────────────────────
-  const handleAvatarChange = async (file: File) => {
-    try {
-      const compressed = await compressImage(file, 256, 0.75)
-      setAvatarFile(compressed)
-      setAvatarPreview(URL.createObjectURL(compressed))
-    } catch {
-      showToast("Failed to process image. Try another file.", "error")
-    }
-  }
+const handleAvatarChange = async (file: File) => {
+  setAvatarFile(file)  // langsung pakai tanpa compress
+  setAvatarPreview(URL.createObjectURL(file))
+}
 
   // ─── Toast helper ──────────────────────────────────────────────────────────
   const showToast = (message: string, type: ToastType) => {

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 import EditProfileTemplate from "@/components/templates/EditProfileTemplate"
 import { createClient } from "@/utils/supabase/client"
 //biang masalah
-import { compressImage } from "@/utils/compressimage"
 
 export default function EditProfilePage() {
   const router = useRouter()
@@ -40,25 +39,18 @@ export default function EditProfilePage() {
     fetchProfile()
   }, [])
 
-  // ── Handle avatar pick + compress ─────────────────────────────────────────
-  const handleAvatarChange = async () => {
-    const input = document.createElement("input")
-    input.type = "file"
-    input.accept = "image/*"
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0]
-      if (!file) return
-      try {
-        const compressed = await compressImage(file, 256, 0.75)
-        setAvatarFile(compressed)
-        setAvatarSrc(URL.createObjectURL(compressed))
-      } catch {
-        alert("Failed to process image.")
-      }
-    }
-    input.click()
+const handleAvatarChange = async () => {
+  const input = document.createElement("input")
+  input.type = "file"
+  input.accept = "image/*"
+  input.onchange = async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0]
+    if (!file) return
+    setAvatarFile(file) 
+    setAvatarSrc(URL.createObjectURL(file))
   }
-
+  input.click()
+}
   // ── Save ──────────────────────────────────────────────────────────────────
   const handleSave = async () => {
     setSaving(true)
