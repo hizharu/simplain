@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import EditProfileTemplate from "@/components/templates/EditProfileTemplate"
 import { createClient } from "@/utils/supabase/client"
+//biang masalah
 import { compressImage } from "@/utils/compressimage"
 
 export default function EditProfilePage() {
