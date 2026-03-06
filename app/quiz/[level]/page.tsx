@@ -9,7 +9,7 @@ interface PageProps {
   params: Promise<{ level: string }>
 }
 
-const TIME_LIMITS = { easy: 120, medium: 100, hard: 80 };
+const TIME_LIMITS = { easy: 270, medium: 250, hard: 230 };
 
 export default function QuizPage({ params }: PageProps) {
   const router = useRouter();

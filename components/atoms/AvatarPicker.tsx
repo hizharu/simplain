@@ -17,7 +17,7 @@ export default function AvatarPicker({ preview, onChange }: AvatarPickerProps) {
         type="button"
         onClick={() => inputRef.current?.click()}
         className="relative w-16 h-16 rounded-full overflow-hidden bg-white/20 flex items-center justify-center border-2 border-white/40 hover:border-white transition group"
-      >
+      > 
         {preview ? (
           <img src={preview} alt="avatar preview" className="w-full h-full object-cover" />
         ) : (
