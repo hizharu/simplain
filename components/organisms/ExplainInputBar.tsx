@@ -26,7 +26,7 @@ export default function ExplainInputBar({ question, setQuestion, onExplain, load
       <button
         onClick={onExplain}
         disabled={loading || !question.trim()}
-        className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-full w-9 h-9 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 flex-shrink-0"
+        className="cursor-pointer bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-full w-9 h-9 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 flex-shrink-0"
       >
         {loading ? (
           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
