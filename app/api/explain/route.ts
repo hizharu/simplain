@@ -32,12 +32,12 @@ Keep responses under 300 words. Use emojis sparingly to make it fun.`,
       ],
     })
 
-    // Stream response back to client
+    // back respon dari stream ke server
     const encoder = new TextEncoder()
     const readable = new ReadableStream({
       async start(controller) {
         for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content ?? ""
+          const text = chunk.choices[0]?.delta?.content ?? "" //note buat ganti logic
           if (text) controller.enqueue(encoder.encode(text))
         }
         controller.close()
@@ -47,7 +47,7 @@ Keep responses under 300 words. Use emojis sparingly to make it fun.`,
     return new Response(readable, {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     })
-
+//error mess 1
   } catch (err) {
     console.error("Explain API error:", err)
     return new Response("Failed to generate explanation", { status: 500 })

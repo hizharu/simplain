@@ -23,7 +23,7 @@ export default function QuizPage({ params }: PageProps) {
     })
   }, [])
 
-  // ── State ────────────────────────────────────────────────────────────────────
+  //state
   const [questions, setQuestions]   = useState<Question[]>([])
   const [loading, setLoading]       = useState(true)
   const [error, setError]           = useState<string | null>(null)
@@ -34,7 +34,7 @@ export default function QuizPage({ params }: PageProps) {
   const [isTimerActive, setIsTimerActive] = useState(false)
   const [showTimeOutModal, setShowTimeOutModal] = useState(false)
 
-  // ── Generate questions from AI ───────────────────────────────────────────────
+  // generate quiz ai system
   useEffect(() => {
     async function generate() {
       try {
