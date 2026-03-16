@@ -1,104 +1,68 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createServerClient } from "@supabase/ssr"
-import { cookies } from "next/headers"
-import { QuizResult, getKnowledgeLevel } from "@/types/quiz"
+import { createClient } from "@/utils/supabase/server"
+import type { QuizResult } from "@/types/quiz"
 
 export async function POST(req: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll: () => cookieStore.getAll(),
-          setAll: (cookiesToSet) => {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
-          },
-        },
-      }
-    )
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
 
-    // Check auth
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const result: QuizResult = await req.json()
 
-    // 1. Get current profile
+    // Fetch current profile
     const { data: profile } = await supabase
       .from("profiles")
-      .select("total_xp, formal_xp, natural_xp, social_xp, streak_days, last_quiz_date, total_achievements")
+      .select("total_xp, formal_xp, natural_xp, social_xp, streak_days, last_quiz_date")
       .eq("id", user.id)
       .single()
 
-    const now = new Date()
-    const today = now.toISOString().split("T")[0]
-    const lastQuizDate = profile?.last_quiz_date ?? null
+    if (!profile) return NextResponse.json({ error: "Profile not found" }, { status: 404 })
 
-    // Calculate streak
-    let streakDays = profile?.streak_days ?? 0
-    if (lastQuizDate === null) {
-      streakDays = 1
-    } else {
-      const yesterday = new Date(now)
-      yesterday.setDate(yesterday.getDate() - 1)
-      const yesterdayStr = yesterday.toISOString().split("T")[0]
-      if (lastQuizDate === yesterdayStr) {
-        streakDays += 1 // continued streak
-      } else if (lastQuizDate === today) {
-        // already played today, keep streak
-      } else {
-        streakDays = 1 // streak reset
-      }
+    // Streak logic
+    const today = new Date().toISOString().split("T")[0]
+    const lastDate = profile.last_quiz_date
+    const isConsecutive = lastDate
+      ? new Date(today).getTime() - new Date(lastDate).getTime() === 86400000
+      : false
+    const newStreak = isConsecutive ? (profile.streak_days ?? 0) + 1 : 1
+
+    // XP update based on subject
+    const xp = result.totalXP
+    const subjectXPField: Record<string, string> = {
+      formal: "formal_xp",
+      natural: "natural_xp",
+      social: "social_xp",
     }
+    const xpField = subjectXPField[result.subject] ?? "formal_xp"
 
-    // Accumulate XP
-    const newFormalXP  = (profile?.formal_xp  ?? 0) + result.scores.formal.xp
-    const newNaturalXP = (profile?.natural_xp ?? 0) + result.scores.natural.xp
-    const newSocialXP  = (profile?.social_xp  ?? 0) + result.scores.social.xp
-    const newTotalXP   = (profile?.total_xp   ?? 0) + result.totalXP
+    const newTotalXP = (profile.total_xp ?? 0) + xp
+    const newSubjectXP = (profile[xpField as keyof typeof profile] as number ?? 0) + xp
 
-    // Achievements: 1 per completed quiz (expandable later)
-    const newAchievements = (profile?.total_achievements ?? 0) + 1
-
-    const knowledgeLevel = getKnowledgeLevel(newTotalXP)
-
-    // 2. Update profile
-    const { error: updateError } = await supabase
+    // Update profile
+    await supabase
       .from("profiles")
       .update({
-        total_xp:           newTotalXP,
-        formal_xp:          newFormalXP,
-        natural_xp:         newNaturalXP,
-        social_xp:          newSocialXP,
-        streak_days:        streakDays,
-        last_quiz_date:     today,
-        total_achievements: newAchievements,
-        knowledge_level:    knowledgeLevel,
+        total_xp: newTotalXP,
+        [xpField]: newSubjectXP,
+        streak_days: newStreak,
+        last_quiz_date: today,
       })
       .eq("id", user.id)
 
-    if (updateError) throw updateError
-
-    // 3. Save quiz attempt history
+    // Insert quiz attempt
     await supabase.from("quiz_attempts").insert({
-      user_id:   user.id,
-      level:     result.level,
-      total_xp:  result.totalXP,
-      formal_xp: result.scores.formal.xp,
-      natural_xp:result.scores.natural.xp,
-      social_xp: result.scores.social.xp,
+      user_id: user.id,
+      level: result.level,
+      subject: result.subject,
+      total_xp: xp,
       completed_at: result.completedAt,
     })
 
-    return NextResponse.json({ success: true, newTotalXP, knowledgeLevel, streakDays })
+    return NextResponse.json({ success: true, xpEarned: xp })
   } catch (err) {
-    console.error("Save score error:", err)
-    return NextResponse.json({ error: "Failed to save score" }, { status: 500 })
+    console.error("save-quiz-score error:", err)
+    return NextResponse.json({ error: "Internal error" }, { status: 500 })
   }
 }

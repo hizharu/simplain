@@ -9,24 +9,28 @@ interface Props {
 export default function FundamentalCard({ title, image, index }: Props) {
   return (
     <div
-      className="relative min-w-[160px] md:min-w-[200px] h-[260px] md:h-[360px]
-      rounded-2xl overflow-hidden shadow-xl bg-black/20
-      transition-transform duration-300 hover:-translate-y-2"
-      style={{ transform: `translateY(${index * 8}px)` }}
+      className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] cursor-pointer
+        w-full aspect-[3/4]           
+        sm:w-44 sm:h-64              
+        md:w-52 md:h-72"
     >
       <Image
         src={image}
         alt={title}
         fill
-        className="object-cover"
+        sizes="(max-width: 640px) 50vw, (max-width: 768px) 176px, 208px"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        priority={index < 2}
       />
 
-      <div className="absolute inset-0 bg-black/30" />
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
-      <div className="absolute bottom-4 left-4 right-4">
-        <h3 className="text-sm md:text-base font-medium">
+      {/* Title */}
+      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+        <p className="text-white font-semibold text-sm sm:text-base leading-tight drop-shadow-sm">
           {title}
-        </h3>
+        </p>
       </div>
     </div>
   )

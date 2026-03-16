@@ -3,71 +3,72 @@ import Groq from "groq-sdk"
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
 
+const subjectPrompts: Record<string, string> = {
+  formal: "mathematics, logic, statistics, computer science, and formal reasoning",
+  natural: "physics, chemistry, biology, earth science, and natural phenomena",
+  social: "history, economics, psychology, sociology, and human society",
+}
+
+const subjectLabels: Record<string, string> = {
+  formal: "Formal Science",
+  natural: "Natural Science",
+  social: "Social Science",
+}
+
+const difficultyGuides: Record<string, string> = {
+  easy: "simple, foundational concepts suitable for beginners",
+  medium: "intermediate concepts requiring some background knowledge",
+  hard: "advanced concepts that challenge deep understanding",
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { level } = await req.json()
+    const { level, subject } = await req.json()
 
-    if (!["easy", "medium", "hard"].includes(level)) {
-      return NextResponse.json({ error: "Invalid level" }, { status: 400 })
+    if (!level || !subject) {
+      return NextResponse.json({ error: "Missing level or subject" }, { status: 400 })
     }
 
-    const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile", // place model
-      temperature: 0.7,
-      max_tokens: 4000,
-      response_format: { type: "json_object" },
-      messages: [
-        {
-          role: "system",
-          content: `You are a quiz generator. Always respond with valid JSON only. 
-No explanation, no markdown, no backticks.
-Always return a JSON object with a "questions" array.`,
-        },
-        {
-          role: "user",
-          content: `Generate exactly 30 multiple choice questions for a science quiz.
-Cover these 3 concepts evenly (exactly 10 questions each):
-- formal science (math, logic, computer science)
-- natural science (physics, chemistry, biology, earth science)
-- social science (history, economics, psychology, sociology)
+    const subjectArea = subjectPrompts[subject as string] ?? subjectPrompts.formal
+    const subjectLabel = subjectLabels[subject as string] ?? "Science"
+    const difficultyGuide = difficultyGuides[level as string] ?? difficultyGuides.medium
 
-Difficulty level: ${level}
-- easy: basic knowledge, straightforward answers
-- medium: requires understanding of concepts
-- hard: requires deep knowledge and critical thinking
+    const prompt = `Generate exactly 15 multiple choice quiz questions about ${subjectArea} (${subjectLabel}).
+Difficulty: ${level} — ${difficultyGuide}.
 
 Rules:
+- All 15 questions must be about ${subjectLabel} topics only
 - Each question has exactly 4 options
-- Exactly 1 correct answer per question
-- correctIndex is 0-based (0, 1, 2, or 3)
-- Shuffle order randomly (do not group by concept)
+- correctIndex is 0-3 (index of the correct answer)
+- concept field: short topic label (e.g. "Algebra", "Photosynthesis", "Supply & Demand")
+- Questions should be clear, educational, and varied across subtopics
 
-Return a JSON object like this:
+Respond ONLY with valid JSON, no markdown, no extra text:
 {
   "questions": [
     {
-      "concept": "formal",
-      "question": "What is 2 + 2?",
-      "options": ["3", "4", "5", "6"],
-      "correctIndex": 1
+      "concept": "string",
+      "question": "string",
+      "options": ["string", "string", "string", "string"],
+      "correctIndex": number
     }
   ]
-}`,
-        },
-      ],
+}`
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 4000,
+      response_format: { type: "json_object" },
     })
 
-    const raw = completion.choices[0]?.message?.content ?? ""
+    const raw = completion.choices[0]?.message?.content ?? "{}"
     const parsed = JSON.parse(raw)
-    const questions = parsed.questions ?? parsed
+    const questions = (parsed.questions ?? []).slice(0, 15)
 
-    // Inject level
-    const withLevel = questions.map((q: object) => ({ ...q, level }))
-
-    return NextResponse.json({ questions: withLevel })
-
+    return NextResponse.json({ questions })
   } catch (err) {
-    console.error("Quiz generation error:", err)
-    return NextResponse.json({ error: "Failed to generate questions" }, { status: 500 })
+    console.error("generate-quiz error:", err)
+    return NextResponse.json({ error: "Failed to generate quiz" }, { status: 500 })
   }
 }
