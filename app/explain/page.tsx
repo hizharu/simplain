@@ -36,19 +36,32 @@ export default function ExplainPage() {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([])
   const [showFavorites, setShowFavorites] = useState(false)
   const [savingId, setSavingId] = useState<string | null>(null)
+  const [userName, setUserName] = useState<string>("")
 
-  useEffect(() => { fetchFavorites() }, [])
+  // Fetch favorites + user profile on mount
+  useEffect(() => {
+    const init = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
 
-  const fetchFavorites = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-    const { data } = await supabase
-      .from("explain_favorites")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("saved_at", { ascending: false })
-    if (data) setFavorites(data)
-  }
+      // Fetch username
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single()
+      if (profile?.username) setUserName(profile.username)
+
+      // Fetch favorites
+      const { data: favs } = await supabase
+        .from("explain_favorites")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("saved_at", { ascending: false })
+      if (favs) setFavorites(favs)
+    }
+    init()
+  }, [])
 
   const handleSaveFavorite = async (q: string, answer: string) => {
     setSavingId(q)
@@ -75,21 +88,27 @@ export default function ExplainPage() {
 
   const handleExplain = async () => {
     if (!question.trim() || loading) return
+
     const userMessage: ChatMessage = { role: "user", content: question, timestamp: new Date() }
     setChatHistory((prev) => [...prev, userMessage])
     setQuestion("")
     setStreamingAnswer("")
     setLoading(true)
+
     try {
       const res = await fetch("/api/explain", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: userMessage.content }),
+        // ── userName dikirim ke API di sini ──
+        body: JSON.stringify({ question: userMessage.content, userName }),
       })
+
       if (!res.ok) throw new Error("Failed")
+
       const reader = res.body?.getReader()
       const decoder = new TextDecoder()
       if (!reader) throw new Error("No reader")
+
       let fullAnswer = ""
       while (true) {
         const { done, value } = await reader.read()
@@ -97,11 +116,21 @@ export default function ExplainPage() {
         fullAnswer += decoder.decode(value)
         setStreamingAnswer(fullAnswer)
       }
-      setChatHistory((prev) => [...prev, { role: "assistant", content: fullAnswer, timestamp: new Date() }])
+
+      setChatHistory((prev) => [...prev, {
+        role: "assistant",
+        content: fullAnswer,
+        timestamp: new Date(),
+      }])
       setStreamingAnswer("")
+
     } catch (err) {
       console.error(err)
-      setChatHistory((prev) => [...prev, { role: "assistant", content: "Oops! Something went wrong.", timestamp: new Date() }])
+      setChatHistory((prev) => [...prev, {
+        role: "assistant",
+        content: "Oops! Something went wrong.",
+        timestamp: new Date(),
+      }])
       setStreamingAnswer("")
     } finally {
       setLoading(false)
