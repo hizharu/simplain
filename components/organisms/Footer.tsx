@@ -67,7 +67,7 @@ export default function Footer() {
           {/* Bottom bar */}
           <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-white/35">
             <span>© 2025 SimPlain. All rights reserved.</span>
-            <span>Made with ♥ for learners</span>
+            <span>by Hizharu</span>
           </div>
         </div>
       </div>
