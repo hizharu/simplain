@@ -30,21 +30,28 @@ export default function HeroSection() {
               <span className="text-white font-semibold">complex things.</span>
             </p>
 
-            {/* Buttons */}
+            {/* Buttons and scroll using scrollintoview */}
             <div className="flex gap-3 justify-center lg:justify-start flex-wrap">
-              <Link href="/explain">
-                <button className="cursor-pointer flex items-center gap-2 px-6 py-3 rounded-full bg-white text-blue-700 text-sm font-bold hover:bg-blue-50 transition shadow-lg shadow-blue-900/20 active:scale-95">
-                  Get Started
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </button>
-              </Link>
+              <button
+                onClick={() => {
+                  document.getElementById("fundamental-section")?.scrollIntoView({ behavior: "smooth" })
+                }}
+                className="cursor-pointer flex items-center gap-2 px-6 py-3 rounded-full bg-white text-blue-700 text-sm font-bold hover:bg-blue-50 transition shadow-lg shadow-blue-900/20 active:scale-95"
+              >
+                Get Started
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
               <Link href="/#quiz-section">
-                <button className="cursor-pointer flex items-center gap-2 px-6 py-3 rounded-full bg-white/15 border border-white/30 text-white text-sm font-semibold hover:bg-white/25 transition active:scale-95">
+                <button 
+                 onClick={() => {
+                  document.getElementById("quiz-section")?.scrollIntoView({ behavior: "smooth" })
+                }}
+                className="cursor-pointer flex items-center gap-2 px-6 py-3 rounded-full bg-white/15 border border-white/30 text-white text-sm font-semibold hover:bg-white/25 transition active:scale-95">
                   Try a Quiz ✦
                 </button>
-              </Link>
+              </Link>   
             </div>
 
             {/* Stats */}

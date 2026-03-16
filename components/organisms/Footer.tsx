@@ -17,7 +17,11 @@ export default function Footer() {
 
       {/* Back to top */}
       <Link href="#main-home">
-        <button className="cursor-pointer absolute top-5 right-5 z-30 text-xs font-bold bg-white/90 text-black rounded-full px-4 py-2 hover:bg-white transition shadow-lg active:scale-95">
+        <button 
+        onClick={() => {
+                  document.getElementById("main-home")?.scrollIntoView({ behavior: "smooth" })
+                }}
+        className="cursor-pointer absolute top-5 right-5 z-30 text-xs font-bold bg-white/90 text-black rounded-full px-4 py-2 hover:bg-white transition shadow-lg active:scale-95">
           ↑ Back to top
         </button>
       </Link>
