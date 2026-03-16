@@ -30,15 +30,28 @@ export default function QuizPage({ params }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answers, setAnswers] = useState<QuizAnswer[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-  const [timeLeft, setTimeLeft] = useState(TIMER[level] ?? 120)
+  const [timeLeft, setTimeLeft] = useState(TIMER[level] ?? 1200)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [showExitModal, setShowExitModal] = useState(false)
 
-  //  Auth guard 
+  // Auth guard
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) router.push("/login")
     })
+  }, [])
+
+  // Intercept browser back button
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault()
+      window.history.pushState(null, "", window.location.href)
+      setShowExitModal(true)
+    }
+    window.history.pushState(null, "", window.location.href)
+    window.addEventListener("popstate", handlePopState)
+    return () => window.removeEventListener("popstate", handlePopState)
   }, [])
 
   // Fetch questions
@@ -62,10 +75,9 @@ export default function QuizPage({ params }: Props) {
     fetchQuestions()
   }, [level, subject])
 
-  // Finish quiz 
+  // Finish quiz
   const finishQuiz = useCallback((finalAnswers: QuizAnswer[], timedOut = false) => {
     const scores: Record<string, ConceptScore> = {}
-
     finalAnswers.forEach((a) => {
       if (!scores[a.concept]) scores[a.concept] = { correct: 0, total: 0, xp: 0 }
       scores[a.concept].total++
@@ -78,8 +90,7 @@ export default function QuizPage({ params }: Props) {
     })
 
     const result: QuizResult = {
-      level,
-      subject,
+      level, subject,
       answers: finalAnswers,
       scores: scores as QuizResult["scores"],
       totalXP: Object.values(scores).reduce((s, c) => s + c.xp, 0),
@@ -106,7 +117,6 @@ export default function QuizPage({ params }: Props) {
     const q = questions[currentIndex]
     const xpRules = XP_RULES[level] ?? { correct: 1, wrong: 0 }
     const isCorrect = selectedIndex === q.correctIndex
-
     const answer: QuizAnswer = {
       questionIndex: currentIndex,
       question: q.question,
@@ -117,9 +127,7 @@ export default function QuizPage({ params }: Props) {
       isCorrect,
       xpEarned: isCorrect ? xpRules.correct : xpRules.wrong,
     }
-
     const newAnswers = [...answers, answer]
-
     if (currentIndex + 1 >= questions.length) {
       finishQuiz(newAnswers)
     } else {
@@ -154,18 +162,25 @@ export default function QuizPage({ params }: Props) {
     finishQuiz([...answers, answer])
   }
 
-  // Render states 
-  const subjectLabel: Record<string, string> = { formal: "Formal Science", natural: "Natural Science", social: "Social Science" }
+  const handleExitConfirm = () => {
+    router.push(`/quiz/levelstart/${level}`)
+  }
+
+  const subjectLabel: Record<string, string> = {
+    formal: "Formal Science",
+    natural: "Natural Science",
+    social: "Social Science",
+  }
 
   if (loading) return (
-    <main className="min-h-screen bg-gradient-to-b from-[#2563eb] to-[#0ea5c2] flex flex-col items-center justify-center text-white gap-4">
+    <main className="min-h-screen bg-[#62A2F3] flex flex-col items-center justify-center text-white gap-4">
       <div className="w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin" />
       <p className="text-white/70">Loading {subjectLabel[subject]} questions...</p>
     </main>
   )
 
   if (error) return (
-    <main className="min-h-screen bg-gradient-to-b from-[#2563eb] to-[#0ea5c2] flex flex-col items-center justify-center text-white gap-4 px-5">
+    <main className="min-h-screen bg-[#62A2F3] flex flex-col items-center justify-center text-white gap-4 px-5">
       <p className="text-red-300">{error}</p>
       <button onClick={() => router.back()} className="px-6 py-2 bg-white text-blue-700 rounded-full text-sm font-semibold">Go Back</button>
     </main>
@@ -174,67 +189,127 @@ export default function QuizPage({ params }: Props) {
   if (questions.length === 0) return null
 
   const q = questions[currentIndex]
-  const progress = ((currentIndex) / questions.length) * 100
-  const isLast = currentIndex === questions.length - 1
+  const progress = (currentIndex / questions.length) * 100
   const mins = Math.floor(timeLeft / 60)
   const secs = timeLeft % 60
 
   return (
-    <main className="min-h-screen bg-[#62A2F3] flex flex-col items-center px-4 pt-24 pb-10">
-      <div className="w-full max-w-2xl">
+    <>
+      <main className="min-h-screen bg-[#62A2F3] flex flex-col items-center px-4 pt-24 pb-10">
+        <div className="w-full max-w-2xl">
 
-        {/* Header info */}
-        <div className="flex items-center justify-between mb-4 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold capitalize">{level}</span>
-            <span className="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold">{subjectLabel[subject]}</span>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+
+            {/* Left: Exit + badges */}
+            <div className="flex items-center gap-2">
+              {/* Exit button */}
+              <button
+                onClick={() => setShowExitModal(true)}
+                className="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 active:bg-white/40 transition text-white"
+                title="Exit quiz"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+
+              <span className="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold capitalize">{level}</span>
+              <span className="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-semibold hidden sm:inline">{subjectLabel[subject]}</span>
+            </div>
+
+            {/* Timer */}
+            <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold
+              ${timeLeft <= 60 ? "bg-red-500/30 text-red-200 animate-pulse" : "bg-white/20 text-white"}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {mins}:{secs.toString().padStart(2, "0")}
+            </div>
           </div>
-          {/* Timer */}
-          <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold
-            ${timeLeft <= 20 ? "bg-red-500/30 text-red-200 animate-pulse" : "bg-white/20 text-white"}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {mins}:{secs.toString().padStart(2, "0")}
+
+          {/* Subject label mobile */}
+          <p className="text-white/60 text-xs mb-3 sm:hidden">{subjectLabel[subject]}</p>
+
+          {/* Progress bar */}
+          <QuizProgressBar progress={progress} />
+          <p className="text-white/50 text-xs text-right mt-1 mb-4">
+            {currentIndex + 1} / {questions.length}
+          </p>
+
+          {/* Question */}
+          <QuizCard question={q.question} progress={progress} />
+
+          {/* Options */}
+          <div className="space-y-3 mt-5">
+            {q.options.map((opt, i) => (
+              <QuizOptionButton
+                key={i}
+                label={opt}
+                index={i}
+                selected={selectedIndex === i}
+                onSelect={() => handleSelect(i)}
+              />
+            ))}
           </div>
-        </div>
 
-        {/* Progress bar */}
-        <QuizProgressBar progress={progress} />
-
-        <p className="text-white/50 text-xs text-right mt-1 mb-4">
-          {currentIndex + 1} / {questions.length}
-        </p>
-
-        {/* Question card */}
-        <QuizCard question={q.question} progress={progress} />
-
-        {/* Options */}
-        <div className="space-y-3 mt-5">
-          {q.options.map((opt, i) => (
-            <QuizOptionButton
-              key={i}
-              label={opt}
-              index={i}
-              selected={selectedIndex === i}
-              onSelect={() => handleSelect(i)}
+          {/* Navigation */}
+          <div className="mt-6">
+            <QuizNavigation
+              currentIndex={currentIndex}
+              total={questions.length}
+              selectedIndex={selectedIndex}
+              onBack={handleBack}
+              onNext={handleNext}
+              onFinish={handleFinish}
             />
-          ))}
+          </div>
         </div>
+      </main>
 
-        {/* Navigation */}
-        <div className="mt-6">
-          <QuizNavigation
-            currentIndex={currentIndex}
-            total={questions.length}
-            selectedIndex={selectedIndex}
-            onBack={handleBack}
-            onNext={handleNext}
-            onFinish={handleFinish}
+      {/* ── Exit confirmation modal ── */}
+      {showExitModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 pb-6 sm:pb-0">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowExitModal(false)}
           />
+
+          {/* Modal card */}
+          <div className="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl z-10">
+            {/* Icon */}
+            <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+
+            <h2 className="text-center text-gray-900 font-bold text-lg mb-2">
+              Leave the quiz?
+            </h2>
+            <p className="text-center text-gray-500 text-sm leading-relaxed mb-6">
+              Your progress will be lost and cannot be continued. Are you sure you want to exit?
+            </p>
+
+            <div className="flex flex-col gap-2.5">
+              <button
+                onClick={handleExitConfirm}
+                className="cursor-pointer w-full py-3 rounded-2xl bg-red-500 hover:bg-red-600 active:bg-red-700 text-white text-sm font-bold transition"
+              >
+                Yes, exit quiz
+              </button>
+              <button
+                onClick={() => setShowExitModal(false)}
+                className="cursor-pointer w-full py-3 rounded-2xl bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 text-sm font-semibold transition"
+              >
+                Continue playing
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-    </main>
+      )}
+    </>
   )
 }
