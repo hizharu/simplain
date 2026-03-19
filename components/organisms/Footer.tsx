@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="relative w-full pt-24 pb-16 mt-10">
+    <footer className="relative w-full pt-24 pb-16 mt-20">
       {/* Background */}
       <div className="absolute inset-0 -z-10">
         <Image
