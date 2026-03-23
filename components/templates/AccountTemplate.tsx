@@ -23,36 +23,42 @@ interface AccountTemplateProps {
 }
 
 export default function AccountTemplate({
-  name,
-  email,
-  avatarSrc,
-  totalXP,
-  streakDays,
-  totalAchievements,
-  knowledgeLevel,
-  subjects,
-  onEditProfile,
-  onBack,
+  name, email, avatarSrc,
+  totalXP, streakDays, totalAchievements,
+  knowledgeLevel, subjects,
+  onEditProfile, onBack,
 }: AccountTemplateProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-400 to-cyan-300 pt-20 pb-10 px-4">
-      {/* Back Button */}
-      <button
-        onClick={onBack}
-        className="absolute top-20 left-4 w-9 h-9 bg-white/80 rounded-full flex items-center justify-center shadow hover:bg-white transition"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
+    <div className="min-h-screen bg-[#62A2F3] relative overflow-hidden">
 
-      {/* Page Title */}
-      <h1 className="text-center text-2xl font-bold text-white mb-6">Account</h1>
+      {/* Decorative blobs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/10 blur-3xl" />
+        <div className="absolute top-40 -left-20 w-48 h-48 rounded-full bg-cyan-300/15 blur-3xl" />
+      </div>
 
-      {/* Content Card */}
-      <div className="max-w-lg mx-auto space-y-4">
-        {/* Profile Header */}
-        <div className="bg-white/95 rounded-2xl shadow-sm px-5 py-4">
+      {/* Top bar */}
+      <div className="relative z-10 flex items-center justify-between px-5 pt-16 pb-6">
+        <button
+          onClick={onBack}
+          className="cursor-pointer w-9 h-9 bg-white/20 hover:bg-white/30 active:bg-white/40 border border-white/20 rounded-full flex items-center justify-center transition-all duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <h1 className="text-lg font-bold text-white tracking-wide">My Account</h1>
+
+        {/* Spacer to center title */}
+        <div className="w-9" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 px-4 pb-12 max-w-lg mx-auto space-y-3">
+
+        {/* Profile card */}
+        <div className="bg-white rounded-3xl shadow-xl shadow-blue-900/10 overflow-hidden">
           <ProfileHeader
             name={name}
             email={email}
@@ -68,7 +74,7 @@ export default function AccountTemplate({
           totalAchievements={totalAchievements}
         />
 
-        {/* Knowledge Level */}
+        {/* Knowledge level */}
         <KnowledgeLevelCard level={knowledgeLevel} subjects={subjects} />
       </div>
     </div>
