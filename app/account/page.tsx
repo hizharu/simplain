@@ -39,14 +39,14 @@ export default function AccountPage() {
 
   useEffect(() => {
     async function fetchProfile() {
-      // 1. Cek auth
+      // Cek auth
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         router.replace("/login")
         return
       }
 
-      // 2. Ambil data profile
+      // Ambil data profile
       const { data, error } = await supabase
         .from("profiles")
         .select("username, email, avatar_url, total_xp, formal_xp, natural_xp, social_xp, streak_days, total_achievements, knowledge_level")

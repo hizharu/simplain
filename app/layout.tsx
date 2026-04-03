@@ -21,8 +21,8 @@ export const metadata = {
   title: 'Simplain',
   description: 'Your simple app description',
   icons: {
-    icon: '/favicon.ico', // pastikan file ada di folder public
-    apple: '/apple-icon.png', // opsional untuk iPhone
+    icon: '/favicon.ico', // make sure the file is on public folder
+    apple: '/apple-icon.png', // optional for iphone
   },
 }
 

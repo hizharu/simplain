@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     const result: QuizResult = await req.json()
 
-    // 1. Get current profile
+    // Get current profile
     const { data: profile } = await supabase
       .from("profiles")
       .select("total_xp, formal_xp, natural_xp, social_xp, streak_days, last_quiz_date, total_achievements")
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
     const knowledgeLevel = getKnowledgeLevel(newTotalXP)
 
-    // 2. Update profile
+    // Update profile
     const { error: updateError } = await supabase
       .from("profiles")
       .update({
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
 
     if (updateError) throw updateError
 
-    // 3. Save quiz attempt history
+    // Save quiz attempt history
     await supabase.from("quiz_attempts").insert({
       user_id:   user.id,
       level:     result.level,

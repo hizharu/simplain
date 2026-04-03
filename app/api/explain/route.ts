@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return new Response("Question is required", { status: 400 })
     }
 
-    // Personalized greeting instruction — only if userName is available
+    // Personalized greeting instruction this will show only if userName is available
     const greetingInstruction = userName
       ? `The user's name is "${userName}". Greet them warmly by name at the very start of your response (e.g. "Hey ${userName}!"). Only greet once.`
       : ""

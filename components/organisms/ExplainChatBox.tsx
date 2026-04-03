@@ -19,7 +19,7 @@ function formatTime(date: Date) {
 export default function ExplainChatBox({
   chatHistory, streamingAnswer, loading,
   onClearHistory, onSaveFavorite, savingId, favorites,
-}: Props) {
+}: Props) { 
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

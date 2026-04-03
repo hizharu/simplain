@@ -137,7 +137,7 @@ export default function QuizResultPage() {
         .confetti      { animation: fall linear infinite; position: absolute; border-radius: 2px; }
       `}</style>
 
-      {/* Confetti — only if score >= 60% */}
+      {/* Confetti but only if score more than (>=) 60% */}
       {accuracy >= 60 && (
         <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
           {[
@@ -222,7 +222,7 @@ export default function QuizResultPage() {
               ))}
             </div>
 
-            {/* Accuracy bar — animates when mounted */}
+            {/* Accuracy bar, this animates will show when mounted */}
             <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-1000 delay-700 ${
