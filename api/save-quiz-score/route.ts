@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     const newSocialXP  = (profile?.social_xp  ?? 0) + result.scores.social.xp
     const newTotalXP   = (profile?.total_xp   ?? 0) + result.totalXP
 
-    // Achievements: 1 per completed quiz (expandable later)
+    // Achievements: 1 per completed quiz (note must be adding another one)
     const newAchievements = (profile?.total_achievements ?? 0) + 1
 
     const knowledgeLevel = getKnowledgeLevel(newTotalXP)

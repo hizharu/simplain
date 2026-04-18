@@ -121,7 +121,7 @@ const handleAvatarChange = async (file: File) => {
 
   // ─── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="mt-18 text-white max-w-md">
+    <div className="mt-5 text-white max-w-md">
       {/* Toast notification */}
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={dismissToast} />

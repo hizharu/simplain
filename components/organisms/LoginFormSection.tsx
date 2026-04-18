@@ -54,7 +54,7 @@ export default function LoginFormSection() {
   }
 
   return (
-    <div className="text-white max-w-md mt-10">
+    <div className="text-white max-w-md ">
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={dismissToast} />
       )}
