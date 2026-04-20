@@ -1,6 +1,7 @@
 import ProfileHeader from "@/components/organisms/ProfileHeader"
 import StatsCard from "@/components/organisms/StatsCard"
 import KnowledgeLevelCard from "@/components/organisms/KnowLedgeLevelCard"
+import DeleteAccountButton from "@/components/organisms/DeleteAccountButton"
 import { ReactNode } from "react"
 
 interface Subject {
@@ -47,14 +48,11 @@ export default function AccountTemplate({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-
         <h1 className="text-lg font-bold text-white tracking-wide">My Account</h1>
-
-        {/* Spacer to center title */}
         <div className="w-9" />
       </div>
 
-      {/* Content */}
+      {/* Content — everything inside this wrapper */}
       <div className="relative z-10 px-4 pb-12 max-w-lg mx-auto space-y-3">
 
         {/* Profile card */}
@@ -76,6 +74,15 @@ export default function AccountTemplate({
 
         {/* Knowledge level */}
         <KnowledgeLevelCard level={knowledgeLevel} subjects={subjects} />
+
+        {/* Danger zone */}
+        <div className="bg-white rounded-3xl shadow-xl shadow-blue-900/10 p-5">
+          <p className="text-[10px] font-bold tracking-widest text-gray-300 uppercase mb-3">
+            Danger Zone
+          </p>
+          <DeleteAccountButton />
+        </div>
+
       </div>
     </div>
   )
