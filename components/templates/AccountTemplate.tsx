@@ -29,7 +29,7 @@ export default function AccountTemplate({
   onEditProfile, onBack,
 }: AccountTemplateProps) {
   return (
-    <div className="min-h-screen bg-[#62A2F3] relative overflow-hidden">
+    <div className="min-h-screen bg-[#62A2F3] relative overflow-hidden mt-4">
 
       {/* Decorative blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
