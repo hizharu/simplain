@@ -201,7 +201,7 @@ export default function QuizPage({ params }: Props) {
           {/* Header */}
           <div className="flex items-center justify-between mb-4">
 
-            {/* Left side: Exit + badges */}
+            {/* Left side */}
             <div className="flex items-center gap-2">
               {/* Exit button */}
               <button
